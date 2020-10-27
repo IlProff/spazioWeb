@@ -1,0 +1,280 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bouncing Ball</title>
+</head>
+<body  bgcolor="black">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  #container {
+    margin: 0 auto;
+    width: 800px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #000;
+    border-radius: 10px;
+    margin-top: 2px;
+  }
+  canvas {
+   display: block;
+  }
+  #title{
+  color:white;
+  
+  }
+  </style>
+  <div id="title">
+  <br>
+  <center><h1>Simulation of Elastic Collision of two balls</h1><center>
+  <br>
+  <h6>move the mouse pointer on the white zone</h6>
+  </div>
+<div id="container"> 
+ <canvas id="canvas" width="800" height="500" style="background-color:white"/>
+ </div>
+  <script >
+    (function() {
+    var win = window,
+        doc = document,
+        w = win.innerWidth,
+        h = win.innerHeight,
+        container = doc.getElementById('container'),
+        canvas = doc.getElementById('canvas');
+    
+    if( win.navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/i) ) {
+      canvas.height = h;
+      canvas.width  = w;
+      container.style.height = h+"px";
+      container.style.width = w+"px";
+    }
+  })();
+ var requestAnimFrame = (function(){
+  return window.requestAnimationFrame       || 
+         window.webkitRequestAnimationFrame || 
+         window.mozRequestAnimationFrame    || 
+         window.oRequestAnimationFrame      || 
+         window.msRequestAnimationFrame     || 
+         function( callback ){
+           window.setTimeout(callback, 1000 / 60);
+         };
+})();
+
+var canvas = document.getElementById("canvas");
+var c = canvas.getContext("2d");
+
+var lineWidth = 4;
+var gravity = 0;
+var dampening = 1;
+var animate = false;
+var sommaraggi=0;
+var Xdistance=0;
+var Ydistance=0;
+var rho=0.001;
+var mouse = {
+  x : 0, 
+  y : 0,
+  down: false
+};
+
+var circle = {
+  x : canvas.width/2,
+  y : canvas.height/2,
+  vx: 2, 
+  vy: 4,
+  radius:28,
+  mass:1
+};
+circle.mass=circle.radius*circle.radius*circle.radius*rho;
+var circle2 = {
+	radius: 40,
+  x : canvas.width/2,
+  y : canvas.height/2,
+  vx: 3.5, 
+  vy: 2,
+  mass: 1
+  
+};
+circle2.mass=circle2.radius*circle2.radius*circle2.radius*rho;
+circle2.x+=3*circle2.radius;
+function executeFrame(){
+  if(animate)
+    requestAnimFrame(executeFrame);
+  incrementSimulation();
+  c.clearRect(0, 0, canvas.width, canvas.height);
+  drawBox();
+  drawCircle();
+  drawCircle2();
+//  if(mouse.down)    drawLineToMouse();
+}
+
+function incrementSimulation(){
+  // Pull the circle toward the mouse
+  /*
+  if(mouse.down){
+    var dx = mouse.x - circle.x,
+        dy = mouse.y - circle.y,
+        distance = Math.sqrt(dx*dx + dy*dy),
+        unitX = dx / distance,
+        unitY = dy / distance,
+        force = distance * mousePullStrength;
+    circle.vx += unitX * force;
+    circle.vy += unitY * force;
+  }
+    */
+  // Execute gravity
+  circle.vy += gravity;
+circle2.vy += gravity;
+  // Execute dampening (slowing down)
+  circle.vx *= dampening;
+  circle.vy *= dampening;
+    circle2.vx *= dampening;
+  circle2.vy *= dampening;
+  // Increment the position by the velocity
+  circle.x += circle.vx;
+  circle.y += circle.vy;
+    circle2.x += circle2.vx;
+  circle2.y += circle2.vy;
+  // Bounce off the floor
+  if(circle.y + circle.radius > canvas.height){
+    circle.y = canvas.height - circle.radius;
+    circle.vy = - circle.vy;
+  } 
+  if(circle2.y + circle2.radius > canvas.height){
+    circle2.y = canvas.height - circle2.radius;
+    circle2.vy = - circle2.vy;
+  }
+  var delta;
+var M=circle.mass+circle2.mass; 
+sommaraggi= circle.radius + circle2.radius;
+var dX = (circle.x - circle2.x);
+var dY = Math.abs(circle.y - circle2.y);
+var distance=Math.sqrt(dX*dX+dY*dY);
+var v1t,v1n,v2t,v2n, nx,ny,v1fn,v2fn;
+nx=dX/distance;
+ny=dY/distance;
+ if(distance<=sommaraggi){
+
+delta=(sommaraggi-distance)/2;
+
+circle.x+=nx*delta;
+circle.y+=ny*delta;
+circle2.x-=nx*delta;
+circle2.y-=ny*delta;
+v1t=-circle.vx*ny+circle.vy*nx;
+v1n=circle.vx*nx+circle.vy*ny;
+v2t=-circle2.vx*ny+circle2.vy*nx;
+v2n=circle2.vx*nx+circle2.vy*ny;
+v1fn=((circle.mass-circle2.mass)*v1n +2*circle2.mass*v2n)/M;
+v2fn=(2*circle.mass* v1n-(circle.mass-circle2.mass)*v2n)/M;
+circle.vx=-v1t*ny+v1fn*nx;
+circle.vy=v1t*nx+v1fn*ny;
+circle2.vx=-v2t*ny+v2fn*nx;
+circle2.vy=v2t*nx+v2fn*ny;
+}
+
+
+  // Bounce off the ceiling
+ if(circle.y - circle.radius < 0){
+    circle.y = circle.radius;
+    circle.vy = -circle.vy;
+  }
+  // Bounce off the right wall
+  if(circle.x + circle.radius > canvas.width){
+    circle.x = canvas.width - circle.radius;
+    circle.vx = - circle.vx;
+  }
+  // Bounce off the left wall
+if(circle.x - circle.radius < 0){
+    circle.x = circle.radius;
+    circle.vx = -circle.vx;
+  }
+  
+  if(circle2.y + circle2.radius > canvas.height){
+    circle2.y = canvas.height - radius;
+    circle2.vy = - circle2.vy;
+  }
+  // Bounce off the ceiling
+  if(circle2.y - circle2.radius < 0){
+    circle2.y = circle2.radius;
+    circle2.vy = -circle2.vy;
+  }
+  // Bounce off the right wall
+  if(circle2.x + circle2.radius > canvas.width){
+    circle2.x = canvas.width - circle2.radius;
+    circle2.vx = - circle2.vx;
+  }
+  // Bounce off the left wall
+  if(circle2.x - circle2.radius < 0){
+    circle2.x = circle2.radius;
+    circle2.vx = -circle2.vx;
+  }
+}
+
+function drawBox(){
+  c.lineWidth = 1;
+  c.strokeRect(0.5, 0.5, canvas.width - 1, canvas.height - 1);
+}
+
+function drawCircle(){
+  c.beginPath();
+  c.arc(circle.x, circle.y, circle.radius - lineWidth/2, 0 , 2 * Math.PI, false);
+  c.fillStyle = '#Ab34De';
+  c.fill();
+  c.lineWidth = 4;
+  c.strokeStyle = 'black';
+  c.stroke();
+}
+function drawCircle2(){
+  c.beginPath();
+  c.arc(circle2.x, circle2.y, circle2.radius - lineWidth/2, 0 , 2 * Math.PI, false);
+  c.fillStyle = '#0aE54F';
+  c.fill();
+  c.lineWidth = 4;
+  c.strokeStyle = 'black';
+  c.stroke();
+}
+/*
+function drawLineToMouse(){
+  c.lineWidth = 2;
+  c.moveTo(circle.x, circle.y);
+  c.lineTo(mouse.x, mouse.y);
+  c.stroke();
+}
+
+canvas.addEventListener('mousedown',function(e){
+  mouse.down = true;
+  mouse.x = e.pageX;
+  mouse.y = e.pageY;
+});
+
+canvas.addEventListener('mousemove', function(e){
+  mouse.x = e.pageX;
+  mouse.y = e.pageY;
+});
+*/
+canvas.addEventListener('mouseup', function(e){
+  mouse.down = false;
+});
+
+// Start animating when the mouse enters the canvas
+canvas.addEventListener('mouseover', function(e){
+  animate = true;
+  executeFrame();
+});
+
+// Stop animating when the mouse exits the canvas
+canvas.addEventListener('mouseout', function(e){
+  mouse.down = false;
+  animate = false;
+});
+
+// Draw the initial scene once, so something
+// is displayed before animation starts.
+executeFrame();
+  </script>
+</body>
+</html>
