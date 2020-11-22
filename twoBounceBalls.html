@@ -151,7 +151,7 @@ circle2.vy += gravity;
 var M=circle.mass+circle2.mass; 
 sommaraggi= circle.radius + circle2.radius;
 var dX = (circle.x - circle2.x);
-var dY = Math.abs(circle.y - circle2.y);
+var dY =(circle.y - circle2.y);
 var distance=Math.sqrt(dX*dX+dY*dY);
 var v1t,v1n,v2t,v2n, nx,ny,v1fn,v2fn;
 nx=dX/distance;
@@ -194,7 +194,7 @@ if(circle.x - circle.radius < 0){
   }
   
   if(circle2.y + circle2.radius > canvas.height){
-    circle2.y = canvas.height - radius;
+    circle2.y = canvas.height - circle2.radius;
     circle2.vy = - circle2.vy;
   }
   // Bounce off the ceiling
