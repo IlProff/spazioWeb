@@ -1,0 +1,47 @@
+
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  #container {
+	left:283px;
+    margin: 0 auto;
+    width: 800px;
+    overflow: hidden;
+    position: absolute;
+    border: 1px solid #000;
+    border-radius: 10px;
+    margin-top: 2px;
+  }
+    #canvas {
+       display: block;
+    }
+    #title{
+      color:white;
+    }
+    #controls
+    {   
+          position:absolute;
+           top:100px;
+           left:5px;
+            color: #fff; /* Colore del testo */
+           font-family: Verdana, sans-serif; /* Tipo di carattere per il testo */
+           font-size: 12px;
+          width:230px;
+          background: black;
+    }
+
+  input { /* Stili comuni agli elementi del form */
+    
+    float: left; /* Float a sinistra */
+    
+    margin: 2px 0; /* Margini */
+    background: #1C1C1C; /* Colore di sfondo */
+    border: 1px solid #323232; /* Bordo */
+    color: #fff; /* Colore del testo */
+    height: 25px; /* Altezza */
+    line-height: 23px; /* Altezza di riga */
+    width: 120px; /* Larghezza */
+    padding: 0 5px; /* Padding */
+    padding-left:5px;
+}
