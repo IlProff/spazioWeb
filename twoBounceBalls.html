@@ -162,8 +162,8 @@ delta=(sommaraggi-distance)/(circle.mass+circle2.mass);
 
 circle.x+=nx*delta*circle2.mass;
 circle.y+=ny*delta*circle2.mass;
-circle2.x-=nx*delta*circle1.mass;
-circle2.y-=ny*delta*circle1.mass;
+circle2.x-=nx*delta*circle.mass;
+circle2.y-=ny*delta*circle.mass;
 v1t=-circle.vx*ny+circle.vy*nx;
 v1n=circle.vx*nx+circle.vy*ny;
 v2t=-circle2.vx*ny+circle2.vy*nx;
