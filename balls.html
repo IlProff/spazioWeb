@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html><head>
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+	<title>Bouncing Ball</title>
+	<link rel="stylesheet" href="css/miostile.css" type="text/css">
+	<script type="text/javascript" src="chrome-extension://hjngolefdpdnooamgdldlkjgmdcmcjnc/content/mathJaxBundle.js"></script>
+	
+	</head>
+<body bgcolor="black" oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
+<div id="title">
+  
+  <center><br><h1>Simulation of Elastic Collision of N balls</h1></center>
+  <center>
+  <br><h6>move the mouse pointer on the white zone</h6>
+  </center>
+</div>
+<div id="container"> 
+	<canvas id="canvas" width="800px" height="500px" style="background-color:white">
+	</canvas>
+</div>
+<div id="controls">
+<input id="Num" type="text" name="number" style="height: 24px;  width:50px"><input type="button" value="change N" style="" onclick="changeN()">
+<br><br><br><br>
+Kinetic Energy
+<div id="print" style="position:relative; top:20px; left:5px; width: 170px; ">12170.947621004494</div>
+</div>
+  
+<script type="text/javascript" src="javascript/miojs.js"></script>
+</body>
+</html>
